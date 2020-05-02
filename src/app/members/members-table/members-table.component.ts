@@ -1,24 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import { MemberEntity } from '../models/member.model';
-import { MembersApiService } from '../members-api.service';
+import { MemberEntity } from "../models/member.model";
+import { MembersApiService } from "../members-api.service";
 
 @Component({
-  selector: 'app-members-table',
-  templateUrl: './members-table.component.html',
-  styles: []
+  selector: "app-members-table",
+  templateUrl: "./members-table.component.html",
+  styles: [],
 })
-export class MembersTableComponent {
+export class MembersTableComponent implements OnInit {
   members: MemberEntity[];
+  organization: string;
 
-  constructor(private membersApi: MembersApiService) { }
+  constructor(private membersApi: MembersApiService) {}
 
-  loadMembers() {
-    this.membersApi.getAllMembers('lemoncode')
-      .subscribe(
-        (ms) => this.members = ms,
-        (error) => console.log(error)
-      );
+  ngOnInit() {
+    this.organization = "lemoncode";
   }
 
+  loadMembers(organization: string) {
+    this.membersApi.getAllMembers(this.organization).subscribe(
+      (ms) => (this.members = ms),
+      (error) => console.log(error)
+    );
+  }
 }
